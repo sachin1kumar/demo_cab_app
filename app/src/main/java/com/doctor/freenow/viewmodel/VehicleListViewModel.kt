@@ -18,12 +18,21 @@ class VehicleListViewModel(private val apiHelper: ApiHelper) : ViewModel() {
         viewModelScope.launch {
             vehicles.postValue(Resource.loading(null))
             try {
-                val usersFromApi = apiHelper.getVehicleList(StringUtils.p1Lat, StringUtils.p1Lon, StringUtils.p2Lat, StringUtils.p2Lon)
+                val usersFromApi = apiHelper.getVehicleList(getQueryMap())
                 vehicles.postValue(Resource.success(usersFromApi))
             } catch (e: Exception) {
                 vehicles.postValue(Resource.error(StringUtils.ERROR_MSG, null))
             }
         }
+    }
+
+    private fun getQueryMap(): Map<String, Any> {
+        val queryMap = HashMap<String, Any>()
+        queryMap[StringUtils.FIRST_LATITUDE] = StringUtils.FIRST_LATITUDE_VAL
+        queryMap[StringUtils.FIRST_LONGITUDE] = StringUtils.FIRST_LONGITUDE_VAL
+        queryMap[StringUtils.SECOND_LATITUDE] = StringUtils.SECOND_LATITUDE_VAL
+        queryMap[StringUtils.SECOND_LONGITUDE] = StringUtils.SECOND_LONGITUDE_VAL
+        return queryMap
     }
 
     fun getVehicles(): LiveData<Resource<Poi>> {
