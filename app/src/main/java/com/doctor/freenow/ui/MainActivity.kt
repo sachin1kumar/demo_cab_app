@@ -1,14 +1,14 @@
-package com.doctor.freenow
+package com.doctor.freenow.ui
 
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.doctor.freenow.R
 import com.doctor.freenow.api.ApiHelperImpl
 import com.doctor.freenow.api.RetrofitBuilder
 import com.doctor.freenow.utils.Status
-import com.doctor.freenow.utils.StringUtils
 import com.doctor.freenow.viewmodel.VehicleListViewModel
 import com.doctor.freenow.viewmodel.ViewModelFactory
 
