@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 
 class VehicleListViewModel(private val apiHelper: ApiHelper) : ViewModel() {
 
-    private val vehicles = MutableLiveData<Resource<List<Poi>>>()
+    private val vehicles = MutableLiveData<Resource<Poi>>()
 
     fun fetchVehicles() {
         viewModelScope.launch {
@@ -26,7 +26,7 @@ class VehicleListViewModel(private val apiHelper: ApiHelper) : ViewModel() {
         }
     }
 
-    fun getVehicles(): LiveData<Resource<List<Poi>>> {
+    fun getVehicles(): LiveData<Resource<Poi>> {
         return vehicles
     }
 

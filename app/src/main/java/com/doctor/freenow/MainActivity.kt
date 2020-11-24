@@ -1,6 +1,7 @@
 package com.doctor.freenow
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -26,23 +27,21 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProviders.of(
                 this,
                 ViewModelFactory(
-                        ApiHelperImpl(RetrofitBuilder.apiService, StringUtils.p1Lat, StringUtils.p1Lon, StringUtils.p2Lat, StringUtils.p2Lon)
-                )
-        ).get(VehicleListViewModel::class.java)
+                        ApiHelperImpl(RetrofitBuilder.apiService))).get(VehicleListViewModel::class.java)
     }
 
     private fun setupAPICall() {
         viewModel.getVehicles().observe(this, Observer {
             when (it.status) {
                 Status.SUCCESS -> {
-
+                    Log.e("Test","Success:${it.data?.poiList.toString()}")
                 }
                 Status.LOADING -> {
 
                 }
                 Status.ERROR -> {
                     //Handle Error
-
+                    Log.e("Test","Success:${it.status}")
                 }
             }
         })
