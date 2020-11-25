@@ -21,6 +21,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setupViewModel()
         setupAPICall()
+        setupFragments()
     }
 
     private fun setupViewModel() {
@@ -46,5 +47,9 @@ class MainActivity : AppCompatActivity() {
             }
         })
         viewModel.fetchVehicles()
+    }
+
+    private fun setupFragments() {
+
     }
 }
