@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.doctor.freenow.R
 import com.doctor.freenow.model.PoiList
 import kotlinx.android.synthetic.main.fragment_recycler_view.*
+import kotlinx.android.synthetic.main.fragment_recycler_view.view.*
 
 class VehicleListFragment : Fragment() {
 
@@ -18,28 +19,32 @@ class VehicleListFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_recycler_view, container, false)
-        setupUI()
+        setupUI(view)
         return view
     }
 
-    private fun setupUI() {
-        recyclerView.setHasFixedSize(true)
-        recyclerView.layoutManager = LinearLayoutManager(activity)
+    private fun setupUI(view: View) {
+        view.recyclerView.setHasFixedSize(true)
+        view.recyclerView.layoutManager = LinearLayoutManager(activity)
         adapter =
                 VehicleApiAdapter(
                         arrayListOf()
                 )
-        recyclerView.addItemDecoration(
+        view.recyclerView.addItemDecoration(
                 DividerItemDecoration(
-                        recyclerView.context,
-                        (recyclerView.layoutManager as LinearLayoutManager).orientation
+                    view.recyclerView.context,
+                        (view.recyclerView.layoutManager as LinearLayoutManager).orientation
                 )
         )
-        recyclerView.adapter = adapter
+        view.recyclerView.adapter = adapter
     }
 
-    private fun renderList(vehicles: List<PoiList>) {
+    fun renderList(vehicles: List<PoiList>) {
         adapter.addData(vehicles)
         adapter.notifyDataSetChanged()
+    }
+
+    fun dismissProgress() {
+        progressBar.visibility = View.GONE
     }
 }

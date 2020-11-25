@@ -15,6 +15,7 @@ import com.doctor.freenow.viewmodel.ViewModelFactory
 class MainActivity : AppCompatActivity() {
 
     private lateinit var viewModel: VehicleListViewModel
+    private var vehicleListFragment: VehicleListFragment? = VehicleListFragment()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,23 +27,26 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupViewModel() {
         viewModel = ViewModelProviders.of(
-                this,
-                ViewModelFactory(
-                        ApiHelperImpl(RetrofitBuilder.apiService))).get(VehicleListViewModel::class.java)
+            this,
+            ViewModelFactory(
+                ApiHelperImpl(RetrofitBuilder.apiService)
+            )
+        ).get(VehicleListViewModel::class.java)
     }
 
     private fun setupAPICall() {
         viewModel.getVehicles().observe(this, Observer {
             when (it.status) {
                 Status.SUCCESS -> {
-                    Log.e("Test","Success:${it.data?.poiList.toString()}")
+                    Log.e("Test", "Success:${it.data?.poiList.toString()}")
+                    it.data?.poiList?.toList()?.let { it1 -> vehicleListFragment?.renderList(it1) }
+                    vehicleListFragment?.dismissProgress()
                 }
                 Status.LOADING -> {
-
                 }
                 Status.ERROR -> {
                     //Handle Error
-                    Log.e("Test","Success:${it.status}")
+                    Log.e("Test", "Success:${it.status}")
                 }
             }
         })
@@ -50,6 +54,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupFragments() {
+        //launching vehicle fragment
+        supportFragmentManager
+            .beginTransaction()
+            .add(R.id.main_container, vehicleListFragment!!)
+            .commit()
+    }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        vehicleListFragment = null
     }
 }
