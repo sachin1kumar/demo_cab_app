@@ -30,7 +30,7 @@ class VehicleApiAdapter(private val vehicles: ArrayList<PoiList>) : RecyclerView
     inner class RecViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         fun bind(vehicles: PoiList) {
-            itemView.tv_vehicle_id.text = vehicles.id
+            "Vehicle Id: ${vehicles.id}".also { itemView.tv_vehicle_id.text = it }
             itemView.tv_fleet_type.text = vehicles.fleetType
         }
 

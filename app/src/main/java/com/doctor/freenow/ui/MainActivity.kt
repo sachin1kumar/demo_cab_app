@@ -16,6 +16,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var viewModel: VehicleListViewModel
     private var vehicleListFragment: VehicleListFragment? = VehicleListFragment()
+    private var mapFragment: MapsFragment? = MapsFragment()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,12 +58,18 @@ class MainActivity : AppCompatActivity() {
         //launching vehicle fragment
         supportFragmentManager
             .beginTransaction()
-            .add(R.id.main_container, vehicleListFragment!!)
+            .add(R.id.vehicle_container, vehicleListFragment!!)
+            .commit()
+        //launching map fragment.
+        supportFragmentManager
+            .beginTransaction()
+            .add(R.id.map_container, mapFragment!!)
             .commit()
     }
 
     override fun onDestroy() {
         super.onDestroy()
         vehicleListFragment = null
+        mapFragment = null
     }
 }
