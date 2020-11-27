@@ -20,6 +20,7 @@ class MapsFragment : Fragment() {
 
     private var mapFragment: SupportMapFragment? = null
     private val vehicleList = ArrayList<PoiList>()
+    private var googleMapInstance: GoogleMap? = null
 
     private val callback = OnMapReadyCallback { googleMap ->
         /**
@@ -31,25 +32,26 @@ class MapsFragment : Fragment() {
          * install it inside the SupportMapFragment. This method will only be triggered once the
          * user has installed Google Play services and returned to the app.
          */
-        addMarkersToMap(googleMap)
+        googleMapInstance = googleMap
+        addMarkersToMap()
         /* val sydney = LatLng(-34.0, 151.0)
          googleMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
          googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))*/
     }
 
-    private fun addMarkersToMap(googleMap: GoogleMap) {
-        googleMap.clear()
+    private fun addMarkersToMap() {
+        googleMapInstance?.clear()
         if (vehicleList.size > 0) {
             for (i in vehicleList.indices) {
                 try {
                     val location = LatLng(vehicleList[i].coordinate.latitude.toDouble(), vehicleList[i].coordinate.longitude.toDouble())
-                    googleMap.addMarker(MarkerOptions()
+                    googleMapInstance?.addMarker(MarkerOptions()
                             .position(location)
                             .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_car)))
-                    googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(location, 10.5f))
+                    googleMapInstance?.animateCamera(CameraUpdateFactory.newLatLngZoom(location, 10.5f))
                 } catch (e: Exception) {
-                    e.printStackTrace()
-                } // end catch
+                    //e.printStackTrace()
+                }
             }
         }
     }
@@ -70,9 +72,19 @@ class MapsFragment : Fragment() {
         mapFragment?.getMapAsync(callback)
     }
 
+    fun zoomMap(poiList: PoiList) {
+        val location = LatLng(poiList.coordinate.latitude.toDouble(), poiList.coordinate.longitude.toDouble())
+        googleMapInstance?.clear()
+        googleMapInstance?.addMarker(MarkerOptions()
+                .position(location)
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_car)))
+        googleMapInstance?.animateCamera(CameraUpdateFactory.newLatLngZoom(location, 50f))
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         mapFragment = null
+        googleMapInstance = null
         vehicleList.clear()
     }
 }

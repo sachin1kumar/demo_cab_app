@@ -15,6 +15,7 @@ import kotlinx.android.synthetic.main.fragment_recycler_view.view.*
 class VehicleListFragment : Fragment() {
 
     private lateinit var adapter: VehicleApiAdapter
+    private lateinit var callBackInterface: CallBackInterface
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -26,10 +27,7 @@ class VehicleListFragment : Fragment() {
     private fun setupUI(view: View) {
         view.recyclerView.setHasFixedSize(true)
         view.recyclerView.layoutManager = LinearLayoutManager(activity)
-        adapter =
-                VehicleApiAdapter(
-                        arrayListOf()
-                )
+        adapter = VehicleApiAdapter(callBackInterface, arrayListOf())
         view.recyclerView.addItemDecoration(
                 DividerItemDecoration(
                     view.recyclerView.context,
@@ -46,5 +44,9 @@ class VehicleListFragment : Fragment() {
 
     fun dismissProgress() {
         progressBar.visibility = View.GONE
+    }
+
+    fun setCallBackInterface(callBackInterface: CallBackInterface) {
+        this.callBackInterface = callBackInterface
     }
 }

@@ -8,7 +8,8 @@ import com.doctor.freenow.R
 import com.doctor.freenow.model.PoiList
 import kotlinx.android.synthetic.main.item_layout.view.*
 
-class VehicleApiAdapter(private val vehicles: ArrayList<PoiList>) : RecyclerView.Adapter<VehicleApiAdapter.RecViewHolder>() {
+class VehicleApiAdapter(private val callBackInterface: CallBackInterface, private val vehicles: ArrayList<PoiList>)
+    : RecyclerView.Adapter<VehicleApiAdapter.RecViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecViewHolder {
         val view: View = LayoutInflater
@@ -21,7 +22,7 @@ class VehicleApiAdapter(private val vehicles: ArrayList<PoiList>) : RecyclerView
         val vehicles = vehicles[position]
         holder.bind(vehicles)
         holder.itemView.setOnClickListener {
-            //TODO
+            callBackInterface.callBackMethod(vehicles)
         }
     }
 
