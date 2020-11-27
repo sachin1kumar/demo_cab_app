@@ -2,13 +2,14 @@ package com.doctor.freenow.ui
 
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.doctor.freenow.R
 import com.doctor.freenow.api.ApiHelperImpl
 import com.doctor.freenow.api.RetrofitBuilder
 import com.doctor.freenow.utils.Status
+import com.doctor.freenow.utils.StringUtils
 import com.doctor.freenow.viewmodel.VehicleListViewModel
 import com.doctor.freenow.viewmodel.ViewModelFactory
 
@@ -36,18 +37,20 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupAPICall() {
-        viewModel.getVehicles().observe(this, Observer {
+        viewModel.getVehicles().observe(this, {
             when (it.status) {
                 Status.SUCCESS -> {
                     Log.e("Test", "Success:${it.data?.poiList.toString()}")
                     it.data?.poiList?.toList()?.let { it1 -> vehicleListFragment?.renderList(it1) }
                     vehicleListFragment?.dismissProgress()
+                    mapFragment?.setVehiclesInMap(it.data?.poiList?.toList())
                 }
                 Status.LOADING -> {
                 }
                 Status.ERROR -> {
                     //Handle Error
-                    Log.e("Test", "Success:${it.status}")
+                    vehicleListFragment?.dismissProgress()
+                    Toast.makeText(this, StringUtils.API_FAIL_MESG, Toast.LENGTH_SHORT).show()
                 }
             }
         })
